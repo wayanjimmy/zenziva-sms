@@ -37,6 +37,6 @@ class NotificationChannel
             return;
         }
 
-        $this->zenziva->send($to, (string) $notification);
+        $this->zenziva->send($to, $notification->toMesabot($notifiable));
     }
 }
