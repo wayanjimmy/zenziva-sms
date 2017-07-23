@@ -2,7 +2,6 @@
 
 namespace Nasution\ZenzivaSms;
 
-use Illuminate\Support\Collection;
 use Nasution\ZenzivaSms\Client as Sms;
 use Illuminate\Notifications\Notification;
 
@@ -28,21 +27,19 @@ class NotificationChannel
     /**
      * Send the given notification
      *
-     * @param  \Illuminate\Support\Collection  $notifiables
+     * @param  mixed $notifiable
      * @param  \Illuminate\Notifications\Notification  $notification
      * @return void
      */
-    public function send(Collection $notifiables, Notification $notification)
+    public function send($notifiable, Notification $notification)
     {
-        foreach ($notifiables as $notifiable) {
-            if ( ! $to = $notifiable->routeNotificationFor('zenziva-sms')) {
-                continue;
-            }
-
-            $this->zenziva->send([
-                'to'   => $to,
-                'text' => $notification,
-            ]);
+        if (! $to = $notifiable->routeNotificationFor('zenziva-sms')) {
+            return;
         }
+
+        $this->zenziva->send([
+            'to'   => $to,
+            'text' => (string) $notification,
+        ]);
     }
 }
