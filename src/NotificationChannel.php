@@ -37,9 +37,6 @@ class NotificationChannel
             return;
         }
 
-        $this->zenziva->send([
-            'to'   => $to,
-            'text' => (string) $notification,
-        ]);
+        $this->zenziva->send($to, (string) $notification);
     }
 }
